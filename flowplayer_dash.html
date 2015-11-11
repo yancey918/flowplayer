@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <!-- 1. skin -->
+        <link rel="stylesheet" href="//releases.flowplayer.org/6.0.3/skin/functional.css">
+        <!-- 2. jquery library - required for video tag based installs -->
+        <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+        <!-- 3. flowplayer -->
+        <script src="//releases.flowplayer.org/6.0.3/flowplayer.min.js"></script>
+        <script src="//releases.flowplayer.org/mpegdash/flowplayer.mpegdash.min.js"></script>
+        <style>
+            .column {
+                float: left;
+                margin: 0 10px;
+            }
+            .player {
+                width: 500px;
+                height: 281.25px;
+                background-color: black;
+            }
+            .player video {
+                width: inherit;
+                height: inherit;
+            }
+        </style>
+    </head>
+    
+    <body>
+        <div class="column">
+            <div style="margin-bottom: 5px;">
+            Flowplayer Test Page<br>
+            <input type="text" id="mpd-source" style="width:400px;" value="http://54.179.182.118:1935/live/livestream/manifest.mpd">
+                <button id="load-mpd" type="button">Load MPEG DASH</button>
+            </div>
+            <div id="mpd-container" class="player">
+          </div>
+        </div>
+        <script>
+  
+            (function() {
+                var loadMPD = document.getElementById('load-mpd');
+    
+                loadMPD.addEventListener('click', function() {
+                    var src = document.getElementById('mpd-source').value;
+                    flowplayer('#mpd-container', {
+                       embed: false,
+                       ratio: false,
+                       autoplay: true,
+                       fullscreen: false,
+                        clip: {
+							live: true,
+                            sources: [
+                                { type: 'application/dash+xml',
+                                  src: src
+                                }
+                            ]
+                        }
+                    }).on('error', function() {
+                        alert(arguments[2].message);
+                    });
+                });
+            })();
+        </script>
+
+</body></html>
